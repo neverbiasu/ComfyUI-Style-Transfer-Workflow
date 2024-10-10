@@ -1,0 +1,892 @@
+{
+  "last_node_id": 19,
+  "last_link_id": 33,
+  "nodes": [
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": {
+        "0": 62.5999755859375,
+        "1": 80
+      },
+      "size": {
+        "0": 315,
+        "1": 314
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "IMAGE"
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3,
+          "label": "MASK"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "高福星.jpg",
+        "image"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAELoader",
+      "pos": {
+        "0": 1661.199951171875,
+        "1": 80
+      },
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            14
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "VAE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "sdxl.vae.safetensors"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "VAEDecode",
+      "pos": {
+        "0": 2026.199951171875,
+        "1": 80
+      },
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 13,
+          "label": "samples"
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 14,
+          "label": "vae"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "IMAGE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 3,
+      "type": "PrepImageForClipVision",
+      "pos": {
+        "0": 427.5999755859375,
+        "1": 266
+      },
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1,
+          "label": "image"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "IMAGE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrepImageForClipVision"
+      },
+      "widgets_values": [
+        "LANCZOS",
+        "top",
+        0.05
+      ]
+    },
+    {
+      "id": 11,
+      "type": "EmptyLatentImage",
+      "pos": {
+        "0": 1296.199951171875,
+        "1": 80
+      },
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            12
+          ],
+          "shape": 3,
+          "label": "LATENT"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "type": "KSampler",
+      "pos": {
+        "0": 1661.199951171875,
+        "1": 218
+      },
+      "size": {
+        "0": 315,
+        "1": 474
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 33,
+          "label": "model"
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 16,
+          "label": "positive"
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 20,
+          "label": "negative"
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 12,
+          "label": "latent_image"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            13
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "LATENT"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        705445028796337,
+        "randomize",
+        40,
+        6,
+        "euler",
+        "normal",
+        1
+      ]
+    },
+    {
+      "id": 16,
+      "type": "CLIPTextEncode",
+      "pos": {
+        "0": 1211.199951171875,
+        "1": 547
+      },
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 19,
+          "label": "clip"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            20
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "CONDITIONING"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, bad quality, lowres, ugly_man, 2boys, "
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Checkpoint Loader (Simple)",
+      "pos": {
+        "0": 50,
+        "1": 869
+      },
+      "size": {
+        "0": 327.5999755859375,
+        "1": 118
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            5
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "MODEL"
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            18,
+            19
+          ],
+          "slot_index": 1,
+          "shape": 3,
+          "label": "CLIP"
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": null,
+          "shape": 3,
+          "label": "VAE"
+        },
+        {
+          "name": "NAME_STRING",
+          "type": "STRING",
+          "links": null,
+          "shape": 3,
+          "label": "NAME_STRING"
+        }
+      ],
+      "title": "IP",
+      "properties": {
+        "Node name for S&R": "Checkpoint Loader (Simple)"
+      },
+      "widgets_values": [
+        "dreamshaperXL_turboDPMSDE.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "PrepImageForClipVision",
+      "pos": {
+        "0": 427.5999755859375,
+        "1": 80
+      },
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {
+        "collapsed": false
+      },
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2,
+          "label": "image"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            28
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "IMAGE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrepImageForClipVision"
+      },
+      "widgets_values": [
+        "LANCZOS",
+        "top",
+        0.05
+      ]
+    },
+    {
+      "id": 15,
+      "type": "CLIPTextEncode",
+      "pos": {
+        "0": 1211.199951171875,
+        "1": 266
+      },
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 18,
+          "label": "clip"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            16
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "CONDITIONING"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "a man"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "IPAdapterPreciseComposition",
+      "pos": {
+        "0": 792.5999755859375,
+        "1": 80
+      },
+      "size": {
+        "0": 365.4000244140625,
+        "1": 278
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 26,
+          "label": "model"
+        },
+        {
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": 27,
+          "label": "ipadapter"
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 28,
+          "label": "image"
+        },
+        {
+          "name": "image_negative",
+          "type": "IMAGE",
+          "link": null,
+          "label": "image_negative"
+        },
+        {
+          "name": "attn_mask",
+          "type": "MASK",
+          "link": null,
+          "label": "attn_mask"
+        },
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": null,
+          "label": "clip_vision"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            30
+          ],
+          "shape": 3,
+          "label": "MODEL",
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IPAdapterPreciseComposition"
+      },
+      "widgets_values": [
+        1,
+        0,
+        "concat",
+        0,
+        1,
+        "V only"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "IPAdapterUnifiedLoader",
+      "pos": {
+        "0": 427.5999755859375,
+        "1": 453
+      },
+      "size": {
+        "0": 315,
+        "1": 78
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5,
+          "label": "model"
+        },
+        {
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": null,
+          "label": "ipadapter"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            26
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "model"
+        },
+        {
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "links": [
+            27,
+            31
+          ],
+          "slot_index": 1,
+          "shape": 3,
+          "label": "ipadapter"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IPAdapterUnifiedLoader"
+      },
+      "widgets_values": [
+        "PLUS (high strength)"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": {
+        "0": 62.5999755859375,
+        "1": 474
+      },
+      "size": {
+        "0": 315,
+        "1": 314
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1,
+            32
+          ],
+          "slot_index": 0,
+          "shape": 3,
+          "label": "IMAGE"
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3,
+          "label": "MASK"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "005_940_062_4k_thanh-truc-tiny-b_00.png",
+        "image"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "IPAdapterPreciseStyleTransfer",
+      "pos": {
+        "0": 1208,
+        "1": 829
+      },
+      "size": {
+        "0": 403.1999816894531,
+        "1": 278
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 30,
+          "label": "model"
+        },
+        {
+          "name": "ipadapter",
+          "type": "IPADAPTER",
+          "link": 31,
+          "label": "ipadapter"
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 32,
+          "label": "image"
+        },
+        {
+          "name": "image_negative",
+          "type": "IMAGE",
+          "link": null,
+          "label": "image_negative"
+        },
+        {
+          "name": "attn_mask",
+          "type": "MASK",
+          "link": null,
+          "label": "attn_mask"
+        },
+        {
+          "name": "clip_vision",
+          "type": "CLIP_VISION",
+          "link": null,
+          "label": "clip_vision"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            33
+          ],
+          "shape": 3,
+          "label": "MODEL",
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IPAdapterPreciseStyleTransfer"
+      },
+      "widgets_values": [
+        1,
+        1,
+        "concat",
+        0,
+        1,
+        "V only"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 2286.199951171875,
+        "1": 80
+      },
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15,
+          "label": "images"
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ],
+    [
+      5,
+      8,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      12,
+      11,
+      0,
+      10,
+      3,
+      "LATENT"
+    ],
+    [
+      13,
+      10,
+      0,
+      13,
+      0,
+      "LATENT"
+    ],
+    [
+      14,
+      12,
+      0,
+      13,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      15,
+      0,
+      10,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      18,
+      8,
+      1,
+      15,
+      0,
+      "CLIP"
+    ],
+    [
+      19,
+      8,
+      1,
+      16,
+      0,
+      "CLIP"
+    ],
+    [
+      20,
+      16,
+      0,
+      10,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      26,
+      9,
+      0,
+      18,
+      0,
+      "MODEL"
+    ],
+    [
+      27,
+      9,
+      1,
+      18,
+      1,
+      "IPADAPTER"
+    ],
+    [
+      28,
+      4,
+      0,
+      18,
+      2,
+      "IMAGE"
+    ],
+    [
+      30,
+      18,
+      0,
+      19,
+      0,
+      "MODEL"
+    ],
+    [
+      31,
+      9,
+      1,
+      19,
+      1,
+      "IPADAPTER"
+    ],
+    [
+      32,
+      1,
+      0,
+      19,
+      2,
+      "IMAGE"
+    ],
+    [
+      33,
+      19,
+      0,
+      10,
+      0,
+      "MODEL"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9646149645000026,
+      "offset": [
+        -581.001622644751,
+        -104.62325932631279
+      ]
+    }
+  },
+  "version": 0.4
+}
